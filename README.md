@@ -14,13 +14,13 @@ git clone https://github.com/lebao3105/lfsbuild.git <path/to/disk>
 ```
 Now run this to show what you can do here:
 ```
-sudo ./scripts/prepare.sh help
+sudo bash -x ./scripts/prepare.sh help
 ```
 
 You can run any files with the following syntax:
 ```
 cd scripts
-sudo prepare.sh [options] # Prepare for the build
+sudo bash -x prepare.sh [options] # Prepare for the build
 su - lfs # After prepared, switch to lfs user
 bash -x [Script] [Options] # Any file you want
 ```
