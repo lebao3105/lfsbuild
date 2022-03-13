@@ -78,7 +78,7 @@ function bash_inst () {
     rm -rf bash-5.1.16
     tar -xf bash-5.1.16.tar.gz
     cd bash-5.1.16
-    style1 "--build=$(support/config.guess) --without-bash-malloc"
+    style1 "--build=$(support/config.guess)" "--without-bash-malloc"
     install
     ln -sv bash $LFS/bin/sh
 }
@@ -206,49 +206,49 @@ function xz_inst() {
     install
 }
 
-if [[ "$@" == "m4" ]]
+if [[ "$1" == "m4" ]]
 then
     m4_inst
-elif [[ "$@" == "ncurses" ]]
+elif [[ "$1" == "ncurses" ]]
 then
     ncurses_inst
-elif [[ "$@" == "bash" ]]
+elif [[ "$1" == "bash" ]]
 then
     bash_inst
-elif [[ "$@" == "coreutils" ]]
+elif [[ "$1" == "coreutils" ]]
 then
     coreutils_inst
-elif [[ "$@" == "diff" ]]
+elif [[ "$1" == "diff" ]]
 then
     diff_inst
-elif [[ "$@" == "file" ]]
+elif [[ "$1" == "file" ]]
 then
     file_inst
-elif [[ "$@" == "findutils" ]]
+elif [[ "$1" == "findutils" ]]
 then
     find_inst
-elif [[ "$@" == "gawk" ]]
+elif [[ "$1" == "gawk" ]]
 then
     gawk_inst
-elif [[ "$@" == "grep" ]]
+elif [[ "$1" == "grep" ]]
 then
     grep_inst
-elif [[ "$@" == "gzip" ]]
+elif [[ "$1" == "gzip" ]]
 then
     gzip_inst
-elif [[ "$@" == "make" ]]
+elif [[ "$1" == "make" ]]
 then
     make_inst
-elif [[ "$@" == "patch" ]]
+elif [[ "$1" == "patch" ]]
 then
     patch_inst
-elif [[ "$@" == "sed" ]]
+elif [[ "$1" == "sed" ]]
 then
     sed_inst
-elif [[ "$@" == "tar" ]]
+elif [[ "$1" == "tar" ]]
 then
     tar_inst
-elif [[ "$@" == "xz" ]]
+elif [[ "$1" == "xz" ]]
 then
     xz_inst
 elif [[ $1 == "all" ]]
