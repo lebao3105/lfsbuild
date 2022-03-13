@@ -125,7 +125,7 @@ function file_inst () {
     make DESTDIR=$LFS install
 }
 
-function findutils_inst() {
+function find_inst() {
     cd $LFS/sources
     rm -rf findutils-4.9.0
     tar -xf findutils-4.9.0.tar.xz
@@ -206,49 +206,49 @@ function xz_inst() {
     install
 }
 
-if [[ $@ == "m4" ]]
+if [[ "$@" == "m4" ]]
 then
     m4_inst
-elif [[ $@ == "ncurses" ]]
+elif [[ "$@" == "ncurses" ]]
 then
     ncurses_inst
-elif [[ $@ == "bash" ]]
+elif [[ "$@" == "bash" ]]
 then
     bash_inst
-elif [[ $@ == "coreutils" ]]
+elif [[ "$@" == "coreutils" ]]
 then
     coreutils_inst
-elif [[ $@ == "diff" ]]
+elif [[ "$@" == "diff" ]]
 then
     diff_inst
-elif [[ $@ == "file" ]]
+elif [[ "$@" == "file" ]]
 then
     file_inst
-elif [[ $@ == "findutils" ]]
+elif [[ "$@" == "findutils" ]]
 then
-    findutils_inst
-elif [[ $@ == "gawk" ]]
+    find_inst
+elif [[ "$@" == "gawk" ]]
 then
     gawk_inst
-elif [[ $@ == "grep" ]]
+elif [[ "$@" == "grep" ]]
 then
     grep_inst
-elif [[ $@ == "gzip" ]]
+elif [[ "$@" == "gzip" ]]
 then
     gzip_inst
-elif [[ $@ == "make" ]]
+elif [[ "$@" == "make" ]]
 then
     make_inst
-elif [[ $@ == "patch" ]]
+elif [[ "$@" == "patch" ]]
 then
     patch_inst
-elif [[ $@ == "sed"]]
+elif [[ "$@" == "sed" ]]
 then
     sed_inst
-elif [[ $@ == "tar" ]]
+elif [[ "$@" == "tar" ]]
 then
     tar_inst
-elif [[ $@ == "xz" ]]
+elif [[ "$@" == "xz" ]]
 then
     xz_inst
 elif [[ $1 == "all" ]]
@@ -259,7 +259,7 @@ then
     coreutils_inst
     diff_inst
     file_inst
-    findutils_inst
+    find_inst
     gawk_inst
     grep_inst
     gzip_inst

@@ -22,7 +22,7 @@ You can run any files with the following syntax:
 cd scripts
 sudo prepare.sh [options] # Prepare for the build
 su - lfs # After prepared, switch to lfs user
-[Script] [Options] # Any file you want
+bash -x [Script] [Options] # Any file you want
 ```
 
 Here are the files you need to run:
