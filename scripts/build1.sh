@@ -76,7 +76,7 @@ function bash_inst () {
     echo "Start building..."
     cd $LFS/sources
     rm -rf bash-5.1.16
-    tar -xf bash-5.1.6.tar.gz
+    tar -xf bash-5.1.16.tar.gz
     cd bash-5.1.16
     style1 "--build=$(support/config.guess) --without-bash-malloc"
     install
