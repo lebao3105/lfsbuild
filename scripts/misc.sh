@@ -34,18 +34,22 @@ function checkwhoami() {
             redcolor "LFS not setted up! Please run prepare.sh before go further!"
             exit 1
         else
-            if [ -d $LFS/{usr/{,bin,lib,sbin},lib} ]
-            then
-                redcolor "LFS file system not found! Run prepare.sh mkdirs to make required folders."
-                exit 1
-            fi
-            if [ -d $LFS/{var,etc,bin,sbin,tools,sources} ]
-            then
-                redcolor "LFS file system not found! Run prepare.sh mkdirs to make required folders."
-                exit 1
-            fi
-            
+            checksys
         fi
+    fi
+}
+
+# Check the LFS system
+function checksys() {
+    if [ -d $LFS/{usr/{,bin,lib,sbin},lib} ]
+    then
+            redcolor "LFS file system not found! Run prepare.sh mkdirs to make required folders."
+            exit 1
+    fi
+    if [ -d $LFS/{var,etc,bin,sbin,tools,sources} ]
+    then
+        redcolor "LFS file system not found! Run prepare.sh mkdirs to make required folders."
+            exit 1
     fi
 }
 
