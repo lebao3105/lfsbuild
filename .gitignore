@@ -1,0 +1,10 @@
+# Entry Linux system
+bin
+etc
+lib
+lib64
+sbin
+sources
+tools
+usr
+var
