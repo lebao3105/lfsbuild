@@ -8,3 +8,7 @@ sources
 tools
 usr
 var
+# Test scripts
+scripts/test.sh
+scripts/*.tar.*
+scripts/bash-5.1.16

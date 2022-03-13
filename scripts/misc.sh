@@ -72,7 +72,8 @@ function greencolor() {
 
 # Build styles
 function style1() {
-    ./configure --prefix=/usr --host=$LFS_TGT "$@"
+    ./configure --prefix=/usr --host=$LFS_TGT \
+                "$@"
     if [[ $? == 0 ]]
     then
         greencolor "Now making the package..."
