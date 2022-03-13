@@ -21,7 +21,15 @@ function mkdirs() {
 
 function getpkgs() {
     source ./misc.sh
-    askpart
+    # If LFS is not defined
+    if [[ $LFS == "" ]]
+    then
+        askpart
+        break
+    else # or not:)
+        checksys
+        break
+    fi
     echo "Downloading packages... Look for wget-list first"
     if [[ -f "wget-list" ]];
     then
@@ -40,12 +48,26 @@ function getpkgs() {
 
 function makeuser() {
     source ./misc.sh
-    askpart
-    echo "Now the script will create a user named lfs."
-    echo "Set it a password after user created."
-    groupadd lfs
-    useradd -s /bin/bash -g sudo -m -k /dev/null lfs
-    passwd lfs
+    # If LFS is not defined
+    if [[ $LFS == "" ]]
+    then
+        askpart
+        break
+    else # or not:)
+        checksys
+        break
+    fi
+    # Check if there are a user named lfs before
+    ls /home/ | grep lfs > /dev/null 2>&1
+    if ! [[ $? == 0 ]]
+    then
+        echo "Now the script will create a user named lfs."
+        echo "Set it a password after user created."
+        groupadd lfs
+        useradd -s /bin/bash -g sudo -m -k /dev/null lfs
+        passwd lfs
+        break
+    fi
     echo "Now give lfs permission..."
     chown -v lfs $LFS/{usr{,/*},lib,var,etc,bin,sbin,tools,sources}
     case $(uname -m) in
@@ -128,6 +150,7 @@ function check_req() {
 function header() {
     echo "edorasOS 0.5 Development Build Script"
     echo "by lebao3105 - use for development only."
+    echo "use help for list all commands to use here."
 }
 
 # Check if the script is running as root
@@ -172,7 +195,7 @@ Gzip-1.3.12
 Linux Kernel-3.2'
     echo "Starting check..."
     check_req
-    echo "Here is the checker result. If there are any errors like program not found, you can install it using (apt)"
+    echo "Here is the checker result. If there are any errors like program not found, you can install it using (apt):"
     echo "(sudo) apt update && (sudo) apt upgrade -y && (sudo) apt install build-essential g++ texinfo yacc python3 m4 make gawk bison -y"
 elif [[ $1 == "createuser" ]]
 then
