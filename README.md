@@ -44,3 +44,9 @@ You should still take a look on the build operation (like the script asks you a 
 This script will install a Linux distribution from scratch. I won't remove any data, but you need to backup/move the data to other disks.
 
 You can't run this script on a partition that exist a system.
+
+### What I need to do
+* Complete the script following the *LFS books (LFS, BLFS, ALFS)
+* Improve package-checking (in prepare.sh with arg check_req)
+* Nofity the user if something is completed, or went wrong
+* Help the user choose which package they want, also don't use g++ and gcc (we will chroot and mount the host system then build:))
