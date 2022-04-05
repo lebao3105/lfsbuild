@@ -61,7 +61,7 @@ https://www.cpan.org/src/5.0/perl-5.34.1.tar.xz
 https://pkg-config.freedesktop.org/releases/pkg-config-0.29.2.tar.gz
 https://sourceforge.net/projects/procps-ng/files/Production/procps-ng-3.3.17.tar.xz
 https://sourceforge.net/projects/psmisc/files/psmisc/psmisc-23.4.tar.xz
-https://www.python.org/ftp/python/3.10.2/Python-3.10.2.tar.xz
+https://www.python.org/ftp/python/3.10.2/Python-3.10.4.tar.xz
 https://www.python.org/ftp/python/doc/3.10.2/python-3.10.2-docs-html.tar.bz2
 https://ftp.gnu.org/gnu/readline/readline-8.1.2.tar.gz
 https://ftp.gnu.org/gnu/sed/sed-4.8.tar.xz
@@ -76,7 +76,7 @@ https://downloads.sourceforge.net/tcl/tcl8.6.12-html.tar.gz
 https://ftp.gnu.org/gnu/texinfo/texinfo-6.8.tar.xz
 https://www.iana.org/time-zones/repository/releases/tzdata2021e.tar.gz
 https://anduin.linuxfromscratch.org/LFS/udev-lfs-20171102.tar.xz
-https://www.kernel.org/pub/linux/utils/util-linux/v2.37/util-linux-2.37.4.tar.xz
+https://www.kernel.org/pub/linux/utils/util-linux/v2.38/util-linux-2.38.tar.xz
 https://anduin.linuxfromscratch.org/LFS/vim-8.2.4489.tar.xz
 https://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-2.46.tar.gz
 https://tukaani.org/xz/xz-5.2.5.tar.xz
