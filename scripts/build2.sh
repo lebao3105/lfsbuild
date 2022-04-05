@@ -9,6 +9,7 @@ then
     exit 1
 fi
 
+# Prepare for chroot
 function mkdirs() {
 
     echo "Creating folders..."
@@ -28,6 +29,7 @@ function mkdirs() {
     echo "Then link some files..."
     ln -sfv $LFS/run $LFS/var/run
     ln -sfv $LFS/run/lock $LFS/var/lock
+    ln -sv $LFS/proc/self/mounts $LFS/etc/mtab
 
     install -dv -m 0750 $LFS/root
     install -dv -m 1777 $LFS/tmp $LFS/var/tmp
@@ -105,6 +107,7 @@ function chroot_setup() {
     setup_more
 }
 
+# Args
 if [[ $1 == "--help" ]]
 then
     echo "Usage: sudo ./build2.sh [--help]"
@@ -115,7 +118,7 @@ then
     echo "  --chroot  chroot into the LFS environment"
     echo "  --mkdirs  Make more addititional folders that prepare.sh don't want to do it"
     echo "  --setup   Setup more things in the LFS environment, including mount files system on $LFS"
-    echo "  --auto-run-next   Run the next script"
+    echo "  --auto-run-next   Run the next script (build2_5.sh) automatically"
     exit 0
 elif [[ $1 == "--chroot" ]]
 then
