@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Check for files
 source ./misc.sh

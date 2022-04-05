@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Ask for $LFS
 function askpart() {

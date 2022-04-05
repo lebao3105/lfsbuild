@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # This based on Chapter 6 in LFS
 # Check for packages
 source ./misc.sh

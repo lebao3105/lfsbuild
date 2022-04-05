@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Prepare for building edorasOS : Make file system and get packages
 # Use this only in Ext4 disk/partition, Linux with apt installed
 
