@@ -99,3 +99,19 @@ function install() {
         exit 1
     fi
 }
+
+function check_chroot() {
+    # Check if the script is running as root
+    if [[ $EUID -ne 0 ]]
+    then
+        echo "This script must be run as root"
+        exit 1
+    fi
+
+    # Check if we are in chroot environment
+    if [[ $(ls /home/lfs) != "" || $(ls /sources) != "" ]]
+    then
+        echo "This script must be run inside chroot environment"
+        exit 1
+    fi
+}
