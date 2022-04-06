@@ -9,6 +9,7 @@ checkpkg "bison"
 checkpkg "perl"
 checkpkg "python"
 checkpkg "texinfo"
+checkpkg "utilinux"
 
 check_chroot
 
@@ -110,15 +111,108 @@ function build_perl() {
 }
 
 function build_py() {
-    # Do something...
+    greencolor "Start building python..."
+    cd /sources
+    rm -rf Python-3.10.4
+    tar -xf Python-3.10.4.tar.xz
+    cd Python-3.10.4
+    ./configure --prefix=/usr                                 \
+                --enable-shared                               \
+                --with-system-expat                           \
+                --with-system-ffi                             \
+                --with-ensurepip=yes                          \
+                --enable-optimizations                        \
+                --with-lto                                    \
+                --enable-loadable-sqlite-extensions
+    if [[ $? -ne 0 ]]
+    then
+        redcolor "Error: Python-3.6.0 failed to configure"
+        exit 1
+    else
+        make
+        if [[ $? -ne 0 ]]
+        then
+            redcolor "Error: Python-3.6.0 failed to make"
+            exit 1
+        else
+            make install
+            if [[ $? -ne 0 ]]
+            then
+                redcolor "Error: Python-3.6.0 failed to install"
+                exit 1
+            fi
+        fi
+    fi
 }
 
 function build_texinfo() {
-    # Do stuff
+    greencolor "Going to build texinfo..."
+    cd /sources
+    rm -rf texinfo-6.8
+    tar texinfo-6.8.tar.xz
+    cd texinfo=6.8
+    sed -e 's/__attribute_nonnull__/__nonnull/' \
+        -i gnulib/lib/malloc/dynarray-skeleton.c
+    ./configure --prefix=/usr
+    if [[ $? -ne 0 ]]
+    then
+        redcolor "Error: texinfo-6.8 failed to configure"
+        exit 1
+    else
+        make
+        if [[ $? -ne 0 ]]
+        then
+            redcolor "Error: texinfo-6.8 failed to make"
+            exit 1
+        else
+            make install
+            if [[ $? -ne 0 ]]
+            then
+                redcolor "Error: texinfo-6.8 failed to install"
+                exit 1
+            fi
+        fi
+    fi
 }
 
 function build_utilinux () {
-
+    cd /source
+    rm -rf util-linux-2.38
+    tar -xf util-linux-2.38.tar.xz
+    cd util-linux-2.38
+    mkdir -pv /var/lib/hwclock
+    ./configure ADJTIME_PATH=/var/lib/hwclock/adjtime    \
+        --libdir=/usr/lib    \
+        --docdir=/usr/share/doc/util-linux-2.38 \
+        --disable-chfn-chsh  \
+        --disable-login      \
+        --disable-nologin    \
+        --disable-su         \
+        --disable-setpriv    \
+        --disable-runuser    \
+        --disable-pylibmount \
+        --disable-static     \
+        --without-python     \
+        runstatedir=/run
+    if [[ $? -ne 0 ]]
+    then
+        redcolor "Error: util-linux-2.38 failed to configure"
+        exit 1
+    else
+        make
+        if [[ $? -ne 0 ]]
+        then
+            redcolor "Error: util-linux-2.38 failed to make"
+            exit 1
+        else
+            make install
+            if [[ $? -ne 0 ]]
+            then
+                redcolor "Error: util-linux-2.38 failed to install"
+                exit 1
+            fi
+        fi
+    fi
 }
 
 if [[ $1 == "gettext" ]]
