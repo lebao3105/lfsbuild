@@ -101,10 +101,10 @@ function build_gcc() {
 
 function linuxheaders() {
     cd $LFS/sources/
-    rm -rf linux-5.16.12
+    rm -rf linux-5.17.3
     echo "Extracting the package..."
-    tar -xf linux-5.16.12.tar.xz 
-    cd linux-5.16.12
+    tar -xf linux-5.17.3.tar.xz 
+    cd linux-5.17.3
     echo "Now start building..."
     make mrproper
     make headers
