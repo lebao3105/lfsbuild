@@ -4,6 +4,7 @@
 # Always use bash -x to run the scripts.
 
 source ./misc.sh
+
 checkwhoami
 checkpkg binutils
 checkpkg gcc
@@ -13,18 +14,12 @@ checkpkg mpc
 
 function build_gcc() {
     cd $LFS/sources
-    
-    rm -rf gcc-11.2.0
-    tar -xf gcc-11.2.0.tar.xz
     cd gcc-11.2.0
     
     # Extract mpfr, gmp and mpc
-    tar -xf ../mpfr-4.1.0.tar.xz
-    mv -v mpfr-4.1.0 mpfr
-    tar -xf ../gmp-6.2.1.tar.xz
-    mv -v gmp-6.2.1 gmp
-    tar -xf ../mpc-1.2.1.tar.gz
-    mv -v mpc-1.2.1 mpc
+    mv -v ../mpfr-4.1.0 mpfr
+    mv -v ../gmp-6.2.1 gmp
+    mv -v ../mpc-1.2.1 mpc
 
     # Configure & add some fixes
     case $(uname -m) in
@@ -42,12 +37,9 @@ function build_gcc() {
     mkdir -v build
     cd build
     echo "Start configuring..."
-    ../configure                                       \
-        --build=$(../config.guess)                     \
-        --host=$LFS_TGT                                \
+    style1 --build=$(../config.guess)                  \
         --target=$LFS_TGT                              \
         LDFLAGS_FOR_TARGET=-L$PWD/$LFS_TGT/libgcc      \
-        --prefix=/usr                                  \
         --with-build-sysroot=$LFS                      \
         --enable-initfini-array                        \
         --disable-nls                                  \
@@ -83,16 +75,11 @@ function build_gcc() {
 
 function build_binutils() {
     cd $LFS/sources
-    rm -rf binutils-2.38
-    tar -xf binutils-2.38.tar.xz
     cd binutils-2.38
     mkdir -v build
     cd build
     sed '6009s/$add_dir//' -i ../ltmain.sh
-    ../configure                   \
-        --prefix=/usr              \
-        --build=$(../config.guess) \
-        --host=$LFS_TGT            \
+    style1 --build=$(../config.guess) \
         --disable-nls              \
         --enable-shared            \
         --disable-werror           \
