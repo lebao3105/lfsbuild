@@ -7,18 +7,30 @@ function askpart() {
     if [[ "$ans" == "" ]]
     then
         echo "No input found."
+        # *exit*
         exit
     else
-        df -t ext4 | grep "$ans" > /dev/null 2>&1 # Check if the partition is mounted or used as Ext4 disk
+        df -t ext4 || df -t btrfs | grep "$ans" > /dev/null 2>&1
         if [[ $? == 0 ]]
         then
             export LFS="$ans"
         else
-            echo "$ans may not a Ext4 partition, or the partition is not mounted."
-            echo "You need to format the partition to Ext4 file system, or mount the partition."
+            echo "$ans may not a Ext4/Btrfs partition, or the partition is not mounted."
             exit 1
         fi
     fi   
+}
+
+# Check if $LFS is defined or not
+function noname() {
+    if [[ $LFS == "" ]]
+    then
+        askpart
+        break
+    else # or not:)
+        checksys
+        break
+    fi
 }
 
 # Check if we running script as lfs user
@@ -41,23 +53,31 @@ function checkwhoami() {
 
 # Check the LFS system
 function checksys() {
-    if [ -d $LFS/{usr/{,bin,lib,sbin},lib} ]
+    if [ -d $LFS/{usr/{,bin,lib,sbin},lib,var,etc,bin,sbin,tools,sources} ]
     then
-        redcolor "LFS file system not found! Run prepare.sh mkdirs to make required folders."
+        redcolor "Warning: Is this location - $LFS - LFS system?"
+        redcolor "If NOT, run prepare.sh first!"
         exit 1
-    fi
-    if [ -d $LFS/{var,etc,bin,sbin,tools,sources} ]
-    then
-        redcolor "LFS file system not found! Run prepare.sh mkdirs to make required folders."
-            exit 1
     fi
 }
 
+# Check if we have our needed files
 function checkpkg() {
     ls $LFS/sources/ | grep $1 > /dev/null 2>&1
     if [[ $? == 0 ]]
     then
         greencolor "$1 found."
+        for in in $(ls -d $LFS/sources/*/ | grep $1); do
+            rm -rf ${i%%/}
+        done
+        tar -xf $1*.tar*
+        if [[ $? == 0 ]]
+        then
+            break
+        else
+            redcolor "Source code of $1 cannot extract!"
+            exit 1
+        fi
         break
     else
         redcolor "$1 not found. Run ./prepare.sh getpkgs to get all required packages."
@@ -74,13 +94,14 @@ function greencolor() {
     printf "\033[32m%s\033[0m" "$@"
 }
 
-# Build styles
+# Build style(s)
 function style1() {
     ./configure --prefix=/usr --host=$LFS_TGT \
                 "$@"
     if [[ $? == 0 ]]
     then
         greencolor "Now making the package..."
+        install
         break
     else 
         redcolor "Configuration failed!"
@@ -109,7 +130,7 @@ function check_chroot() {
     fi
 
     # Check if we are in chroot environment
-    if [[ $(ls /home/lfs) != "" || $(ls /sources) != "" ]]
+    if [[ $(ls /sources) != "" ]]
     then
         echo "This script must be run inside chroot environment"
         exit 1
