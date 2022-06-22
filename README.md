@@ -1,18 +1,13 @@
 ## Linux From Scratch Build Scripts
 
 ### Requirements
-* Ext4 disk/partition >10GB (at least for a Linux system, btrfs not tested)
-* Linux distribution with a package manager installed** (now I use apt on Ubuntu)
-* git to clone this repo (or other package if you want)
-* A lot of time (this can take more than 3 hours!)
-** : You can check for package requirements on scripts/prepare.sh (run sudo ./scripts/parepare.sh checkreq)
+* A partition that is higher than 10GB (for normal use) or ~6GB (for testing if this project works:)
+* Install required packages shown from [scripts/checker.sh --list-pkgs](scripts/checker.sh)
+* User with sudo access (or even running as **root** user)
+* A working internet for running [scripts/prepare.sh](scripts/prepare.sh) (if you don't use all-nodown parameter)
 
 ### Run
-Clone the repo to the mounted target disk/partition folder:
-```
-git clone https://github.com/lebao3105/lfsbuild.git <path/to/disk>
-```
-Now run this to show what you can do here:
+Clone this project, then run this to show what you can do here:
 ```
 sudo bash -x ./scripts/prepare.sh help
 ```
@@ -20,10 +15,11 @@ sudo bash -x ./scripts/prepare.sh help
 You can run any files with the following syntax:
 ```
 cd scripts
-sudo bash -x prepare.sh [options] # Prepare for the build
+sudo bash -x prepare.sh [options] # If you have not done this yet
 su - lfs # After prepared, switch to lfs user
 bash -x [Script] [Options] # Any file you want
 ```
+Some files are required to run as root, take care about that.
 
 Here are the files you need to run:
 * prepare.sh (run as root/current user with sudo access)
@@ -31,22 +27,16 @@ Here are the files you need to run:
 * build1.sh (also run as lfs user, build on chapter 6)
 * buildcompiler2.sh (build essential compilers part 2)
 * build2.sh (run in chroot environment, build some packages)
+* build2_5.sh (part 2 of the build2.sh script)
 * build3.sh (Build your base system)
-* sysconf.sh (Config the system and setup the bootloader)
+* sysconf.sh (Config the system and setup the bootloader - not available yet)
 
 ### Notes
-Normally, the disk/partition is mounted on /media/_your_user_name_/_disk_label. You don't need to mount the partition in /mnt like LFS book.
+Normally, the disk/partition is mounted on a folder namely its label/UUID under ```/media/$USER/```. You don't need to mount the partition in /mnt like LFS book.
 
-This project based on LFS Book (also BLFS) Development build - which provides nearly latest packages. The stable version now is 11.x series.
+This project based on LFS Book (also BLFS) Development build - which provides nearly latest packages. The stable version is 11.x series.
 
-You should still take a look on the build operation (like the script asks you a question, or build failed..). This is just a automated scripts but it can't replace you in building your own system.
+This script will install a Linux distribution from scratch. Backup your data, and make a partition.<br>
+ALL data on the new partition WILL BE DESTROYED. Make sure to format it to Ext4/Btrfs format. Never use NTFS or FAT!
 
-This script will install a Linux distribution from scratch. I won't remove any data, but you need to backup/move the data to other disks.
-
-You can't run this script on a partition that exist a system.
-
-### What I need to do
-* Complete the script following the *LFS books (LFS, BLFS, ALFS)
-* Improve package-checking (in prepare.sh with arg check_req)
-* Nofity the user if something is completed, or went wrong
-* Help the user choose which package they want, also don't use g++ and gcc (we will chroot and mount the host system then build:))
+This will takes you a lot of times (building GCC and Binutils + Linux kernel are the longests). You can do something you need, e.g your homeworks. But still look your PC.
