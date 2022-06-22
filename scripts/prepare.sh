@@ -1,9 +1,10 @@
 #!/bin/bash
-# Prepare for building edorasOS : Make file system and get packages
-# Use this only in Ext4 disk/partition, Linux with apt installed
+# Prepare for building our LFS system : Get a partition and get packages
+# Make sure to read README.md & run ./checker.sh first!
+
+source ./misc.sh # import first
 
 function mkdirs() {
-    source ./misc.sh
     askpart
     echo "Making directories..."
     mkdir -pv $LFS/{usr,lib,var,etc,bin,sbin,tools,sources} 
@@ -20,16 +21,6 @@ function mkdirs() {
 }
 
 function getpkgs() {
-    source ./misc.sh
-    # If LFS is not defined
-    if [[ $LFS == "" ]]
-    then
-        askpart
-        break
-    else # or not:)
-        checksys
-        break
-    fi
     echo "Downloading packages... Look for wget-list first"
     if [[ -f "wget-list" ]];
     then
@@ -37,7 +28,14 @@ function getpkgs() {
         break
     else
         echo "Package list not exist in the file system. Getting it..."
-        wget http://www.linuxfromscratch.org/lfs/view/development/wget-list
+        # We have this file already, but if it's not exists, get it
+        if [[ command -v wget >/dev/null 2>&1 ]]
+        then
+            wget http://www.linuxfromscratch.org/lfs/view/development/wget-list
+        else
+            echo "Both wget and curl not found!"
+            exit 1
+        fi
     fi
     wget -i wget-list -c --show-progress -P $LFS/sources
     if [[ $? == 0 ]]
@@ -47,16 +45,6 @@ function getpkgs() {
 }
 
 function makeuser() {
-    source ./misc.sh
-    # If LFS is not defined
-    if [[ $LFS == "" ]]
-    then
-        askpart
-        break
-    else # or not:)
-        checksys
-        break
-    fi
     # Check if there are a user named lfs before
     ls /home/ | grep lfs > /dev/null 2>&1
     if ! [[ $? == 0 ]]
@@ -89,75 +77,19 @@ function makeuser() {
     echo "Now everything should be done here. Do su - lfs to login to lfs user and do something other."
 }
 
-# From LFS site
-function check_req() {
-    export LC_ALL=C
-    bash --version | head -n1 | cut -d" " -f2-4
-    MYSH=$(readlink -f /bin/sh)
-    echo "/bin/sh -> $MYSH"
-    echo $MYSH | grep -q bash || echo "ERROR: /bin/sh does not point to bash"
-    unset MYSH
-
-    echo -n "Binutils: "; ld --version | head -n1 | cut -d" " -f3-
-    bison --version | head -n1
-
-    if [ -h /usr/bin/yacc ]; then
-        echo "/usr/bin/yacc -> `readlink -f /usr/bin/yacc`";
-    elif [ -x /usr/bin/yacc ]; then
-        echo yacc is `/usr/bin/yacc --version | head -n1`
-    else
-        echo "yacc not found"
-    fi
-
-    echo -n "Coreutils: "; chown --version | head -n1 | cut -d")" -f2
-    diff --version | head -n1
-    find --version | head -n1
-    gawk --version | head -n1
-
-    if [ -h /usr/bin/awk ]; then
-        echo "/usr/bin/awk -> `readlink -f /usr/bin/awk`";
-    elif [ -x /usr/bin/awk ]; then
-        echo awk is `/usr/bin/awk --version | head -n1`
-    else
-        echo "awk not found"
-    fi
-
-    gcc --version | head -n1
-    g++ --version | head -n1
-    grep --version | head -n1
-    gzip --version | head -n1
-    cat /proc/version
-    m4 --version | head -n1
-    make --version | head -n1
-    patch --version | head -n1
-    echo Perl `perl -V:version`
-    python3 --version
-    sed --version | head -n1
-    tar --version | head -n1
-    makeinfo --version | head -n1  # texinfo version
-    xz --version | head -n1
-
-    echo 'int main(){}' > dummy.c && g++ -o dummy dummy.c
-    if [ -x dummy ]
-    then 
-        echo "g++ compilation OK";
-    else 
-        echo "g++ compilation failed"; 
-    fi
-    rm -f dummy.c dummy
-}
-
 function header() {
-    echo "edorasOS 0.5 Development Build Script"
+    echo "Linux From Scratch (LFS) System Development Build Script"
     echo "by lebao3105 - use for development only."
     echo "use help for list all commands to use here."
+    echo "--------------------------------------------------------"
 }
 
-# Check if the script is running as root
-
-if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 1>&2
-   exit 1
+if [[ $1 -ne "help"]]; then
+    # Check if the script is running as root
+    if [[ $EUID -ne 0 ]]; then
+        redcolor "This script must be run as root" 1>&2
+        exit 1
+    fi
 fi
 
 # Main program 
@@ -169,11 +101,8 @@ elif [[ $1 == "download" ]]
 then
     header
     getpkgs
-elif [[ $1 == "checkreq" ]]
-then
-    header
-    echo "Here are is required packages:"
-    echo 'M4-1.4.10
+<< ENC
+'M4-1.4.10
 Make-4.0
 Patch-2.5.4
 Perl-5.8.8
@@ -193,10 +122,7 @@ GCC-4.8 including the C++ compiler, g++ (Versions greater than 11.2.0 are not re
 Grep-2.5.1a
 Gzip-1.3.12
 Linux Kernel-3.2'
-    echo "Starting check..."
-    check_req
-    echo "Here is the checker result. If there are any errors like program not found, you can install it using (apt):"
-    echo "(sudo) apt update && (sudo) apt upgrade -y && (sudo) apt install build-essential g++ texinfo yacc python3 m4 make gawk bison -y"
+ENC
 elif [[ $1 == "createuser" ]]
 then
     header
@@ -206,12 +132,11 @@ then
     header
     echo "Some available commands:"
     echo "createuser : Make user for building"
-    echo "checkreq : Check the system if it meet building requirements"
     echo "download : Get packages"
     echo "mkdir : Make system directories"
     echo "all : Make everything"
-    echo "all-nodown : Make everything not download"
-    echo "Why you get there? - You are missing one of there commands."
+    echo "all-nodown : Make everything without downloading"
+    echo "Why you get there? - You are missing one of theese commands."
     exit 1
 elif [[ $1 == "all" ]] # do everything
 then
