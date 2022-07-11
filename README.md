@@ -5,6 +5,7 @@
 * Install required packages shown from [scripts/checker.sh --list-pkgs](scripts/checker.sh)
 * User with sudo access (or even running as **root** user)
 * A working internet for running [scripts/prepare.sh](scripts/prepare.sh) (if you don't use all-nodown parameter)
+* bash
 
 ### Run
 Clone this project, then run this to show what you can do here:
@@ -29,7 +30,6 @@ Here are the files you need to run:
 * build2.sh (run in chroot environment, build some packages)
 * build2_5.sh (part 2 of the build2.sh script)
 * build3.sh (Build your base system)
-* sysconf.sh (Config the system and setup the bootloader - not available yet)
 
 ### Notes
 Normally, the disk/partition is mounted on a folder namely its label/UUID under ```/media/$USER/```. You don't need to mount the partition in /mnt like LFS book.

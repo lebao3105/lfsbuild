@@ -17,7 +17,7 @@ then
     echo "--help : show this help and exit"
     echo "--checkfs : Check for the file system of the target partition"
     echo "--list-pkgs : List required packages and other requirements"
-    echo "Running $0 with no/invalid parementers will start the checker."
+    echo "Running $0 with no/invalid paramenter will start the script it self normally."
     exit 1
 else
     export LC_ALL=C
@@ -58,9 +58,13 @@ else
     done
 
     echo "Missing packages:"
-    for l in ${notfound[@]}; do
-        echo "* $l"
-    done
+    if [ notfound=() ]; then
+        echo "None."
+    else
+        for l in ${notfound[@]}; do
+            echo "* $l"
+        done
+    fi
     echo "Done!"
     exit 0
 fi

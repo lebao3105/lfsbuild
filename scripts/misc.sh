@@ -75,7 +75,7 @@ function checkpkg() {
         then
             break
         else
-            redcolor "Source code of $1 cannot extract!"
+            redcolor "Source code of $1 cannot be extracted!"
             exit 1
         fi
         break
@@ -109,6 +109,7 @@ function style1() {
     fi
 }
 
+# for new system before be chrootted
 function install() {
     make 
     make DESTDIR=$LFS install
@@ -119,6 +120,18 @@ function install() {
         redcolor "Installation of a package failed!"
         exit 1
     fi
+}
+
+# for chrootted system
+function install_chrootted() {
+    make
+    # some time we need to test the package
+    if [[ $@ == "check" ]]; then
+        make check
+    elif [[ $@ == "test" ]]; then
+        make test
+    fi
+    make install
 }
 
 function check_chroot() {
