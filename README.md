@@ -36,7 +36,7 @@ Normally, the disk/partition is mounted on a folder namely its label/UUID under 
 
 This project based on LFS Book (also BLFS) Development build - which provides nearly latest packages. The stable version is 11.x series.
 
-This script will install a Linux distribution from scratch. Backup your data, and make a partition.<br>
+This script will install Linux system to your partition! Backup your data first!<br>
 ALL data on the new partition WILL BE DESTROYED. Make sure to format it to Ext4/Btrfs format. Never use NTFS or FAT!
 
 This will takes you a lot of times (building GCC and Binutils + Linux kernel are the longests). You can do something you need, e.g your homeworks. But still look your PC.
