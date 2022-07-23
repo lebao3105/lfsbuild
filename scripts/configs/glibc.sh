@@ -6,23 +6,7 @@ source ../misc.sh
 checkpkg tzdata2022a
 check_chroot
 
-cat > /etc/nsswitch.conf << "EOF"
-# Begin /etc/nsswitch.conf
-
-passwd: files
-group: files
-shadow: files
-
-hosts: files dns
-networks: files
-
-protocols: files
-services: files
-ethers: files
-rpc: files
-
-# End /etc/nsswitch.conf
-EOF
+cp ../../templates/nsswitch.conf /etc
 
 cd /sources/tzdata2022a
 
