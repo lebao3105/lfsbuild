@@ -1,3 +1,4 @@
+## I stopped working on this project since I don't have time for developing that. The work is now in Chapter 8 of LFS (Development build of course), you can continue working on it and beyond on BLFS! Remember to update wget URLs list!
 ## Linux From Scratch Build Scripts
 
 ### Requirements
